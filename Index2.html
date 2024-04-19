@@ -1,1 +1,688 @@
-i
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Library System</title>
+  <style>
+      /* Basic styling */
+      body {
+          font-family: Arial, sans-serif;
+          margin: 20px;
+          background-color:#c5c5c5;
+      }
+      button {
+          margin-top: 1px;
+      }
+      .user {
+           background-color: #f0f0f0;
+           padding: 10px;
+           border: 2px solid #ccc;
+           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      h2 {
+        background-color:#40372059;
+           color: White;
+           padding: 10px;
+           border: 5px solid #ccc;
+      }
+      /* Additional styling for department select and books list */
+      #departmentSelect {
+          margin-bottom: 10px;
+      }
+      #booksList {
+          list-style-type: none;
+          padding: 0;
+      }
+      #booksList li {
+          margin-bottom: 5px;
+      }
+    h4 {
+      color:#556B2F;
+    }
+    #libraryOperations{
+      background-color:#808080;
+       padding: 10px;
+       border: 2px solid #ccc;
+       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+      footer {
+          text-align: center;
+          background-color: #333;
+          color: #fff;
+          padding: 20px 0;
+      }
+
+
+  </style>
+</head>
+<body>
+
+<h2>WELCOME TO THE FEDERAL POLYTECHNIC NASARAWA LIBRARY </h2>
+<marquee>AUTOMATED LIBRARY SYSTEM</marquee>
+
+<!-- User Information Section -->
+<div class="user">
+    <h3>User Information</h3>
+    <label for="name">Name:</label><br>
+    <input type="text" id="name"><br><br>
+    <label for="department">Department:</label><br>
+    <input type="text" id="department"><br><br>
+    <label for="age">Age:</label><br>
+    <input type="number" id="age"><br><br>
+    <label for="registration">Registration Number:</label><br>
+    <input type="text" id="registration"><br>
+</div>
+
+<!-- Department Selection Section -->
+<div>
+    <h3>Department Selection</h3>
+    <select id="departmentSelect" onchange="displayBooks()">
+        <option value="">Select your department</option>
+        <option value="Chemical engineering">Chemical engineering</option>
+        <option value="Electrical Engineering">Electrical Engineering</option>
+        <option value="Mechanical Engineering">Mechanical Engineering</option>
+    </select>
+</div>
+
+<!-- Library Books Section -->
+<div id="libraryBooks">
+    <h3>Library Books</h3>
+    <ul id="booksList"></ul>
+</div>
+
+<!-- Library Operations Section -->
+<div id="libraryOperations">
+    <h3>Library Operations</h3>
+
+  <h4>Check Book Availability</h4>
+  <select id="checkSelect">
+      <option value="">Select a book</option>
+      <option value="Polymer">Polymer</option>
+      <option value="Numerical Method">Numerical Method</option>
+      <option value="Circuit Theory">Circuit Theory</option>
+      <option value="Mechanical Workshop">Mechanical Workshop</option>
+      <option value="Unit operation">Unit operation</option>
+      <option value="Electrical power">Electrical power</option>
+      <option value="Machines">Machines</option>
+      <option value="Wiring and piping">Wiring and piping</option>
+      <option value="Machines Designs">Machines Designs</option>
+      <option value="Fluid Machanism">Fluid Machanism</option>
+      <option value="Matlab">Matlab</option>
+  </select>
+  <button onclick="checkAvailability()">Check</button>
+
+    <h4>Borrow a Book</h4>
+    <select id="borrowSelect">
+        <option value="">Select a book</option>
+        <option value="Polymer">Polymer</option>
+        <option value="Numerical Method">Numerical Method</option>
+        <option value="Circuit Theory">Circuit Theory</option>
+        <option value="Mechanical Workshop">Mechanical Workshop</option>
+        <option value="Unit operation">Unit operation</option>
+        <option value="Electrical power">Electrical power</option>
+        <option value="Machines">Machines</option>
+        <option value="Wiring and piping">Wiring and piping</option>
+        <option value="Machines Designs">Machines Designs</option>
+        <option value="Fluid Machanism">Fluid Machanism</option>
+        <option value="Matlab">Matlab</option>
+    </select>
+    <button onclick="borrowBook()">Borrow</button>
+
+    <h4>Return a Book</h4>
+    <select id="returnSelect">
+        <option value="">Select a book</option>
+        <option value="Polymer">Polymer</option>
+        <option value="Numerical Method">Numerical Method</option>
+        <option value="Circuit Theory">Circuit Theory</option>
+        <option value="Mechanical Workshop">Mechanical Workshop</option>
+        <option value="Unit operation">Unit operation</option>
+        <option value="Electrical power">Electrical power</option>
+        <option value="Machines">Machines</option>
+        <option value="Wiring and piping">Wiring and piping</option>
+        <option value="Machines Designs">Machines Designs</option>
+        <option value="Fluid Machanism">Fluid Machanism</option>
+        <option value="Matlab">Matlab</option>
+    </select>
+    <button onclick="returnBook()">Return</button>
+  
+  </div>
+  <footer>
+    <p>Created by Kashim Ibrahim Opeyemi<br>Contact us:+234 9014-794-992<br>copyright@KashInc.com</p>
+
+
+
+<script>
+    // Define library inventory
+    var libraryInventory = [
+        { title: "Fluid Machanism", author: "I B Kashim", department: "Chemical engineering", available: true },
+        { title: "Unit operation", author: "Aishat Temidayo", department: "Chemical engineering", available: true },
+        { title: "Polymer", author: "Janet Godwin", department: "Chemical engineering", available: true },
+        { title: "Matlab", author: "I B Kashim", department: "Chemical engineering", available: true },
+        { title: "Numerical Method", author: "I B Kashim", department: "Chemical engineering", available: true },
+
+        { title: "Circuit Theory", author: "Jamiu Abdulwasiu", department: "Electrical Engineering", available: true },
+        { title: "Wiring and piping", author: "Samuel Jacob", department: "Electrical Engineering", available: true },
+        { title: "Electrical power", author: "Ibrahim kashim opeyemi", department: "Electrical Engineering", available: true },
+        { title: "Matlab", author: "Moses Mpah Ashu", department: "Electrical Engineering", available: true },
+        { title: "Mechanical Workshop", author: "Ibrahim kashim opeyemi", department: "Mechanical Engineering", available: true }
+    ];
+    // Function to display books for selected department 
+      function displayBooks() {
+          var selectedDepartment = document.getElementById("departmentSelect").value;
+          var booksList = document.getElementById("booksList");
+          booksList.innerHTML = ""; // Clear previous list
+          libraryInventory.forEach(function(book) {
+              if (book.department === selectedDepartment) {
+                  var listItem = document.createElement("li");
+                  listItem.textContent = "Title: " + book.title + ", Author: " + book.author;
+                  booksList.appendChild(listItem);
+              }
+          });
+      }
+
+      // Function to borrow a book
+      function borrowBook() {
+          var title = document.getElementById("borrowSelect").value;
+          performBookOperation(title, "borrow");
+      }
+
+      // Function to return a book
+      function returnBook() {
+          var title = document.getElementById("returnSelect").value;
+          performBookOperation(title, "return");
+      }
+
+      // Function to check book availability
+      function checkAvailability() {
+          var title = document.getElementById("checkSelect").value;
+          performBookOperation(title, "check");
+      }
+
+      // Function to perform book operation
+      function performBookOperation(title, operation) {
+          if (!title) {
+              alert("Please select a book.");
+              return;
+          }
+          var selectedDepartment = document.getElementById("departmentSelect").value;
+          for (var i = 0; i < libraryInventory.length; i++) {
+              if (libraryInventory[i].title === title) {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Library System</title>
+  <style>
+      /* Basic styling */
+      body {
+          font-family: Arial, sans-serif;
+          margin: 20px;
+          background-color:#c5c5c5;
+      }
+      button {
+          margin-top: 1px;
+      }
+      .user {
+           background-color: #f0f0f0;
+           padding: 10px;
+           border: 2px solid #ccc;
+           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      h2 {
+        background-color:#40372059;
+           color: White;
+           padding: 10px;
+           border: 5px solid #ccc;
+      }
+      /* Additional styling for department select and books list */
+      #departmentSelect {
+          margin-bottom: 10px;
+      }
+      #booksList {
+          list-style-type: none;
+          padding: 0;
+      }
+      #booksList li {
+          margin-bottom: 5px;
+      }
+    h4 {
+      color:#556B2F;
+    }
+    #libraryOperations{
+      background-color:#808080;
+       padding: 10px;
+       border: 2px solid #ccc;
+       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+      footer {
+          text-align: center;
+          background-color: #333;
+          color: #fff;
+          padding: 20px 0;
+      }
+
+
+  </style>
+</head>
+<body>
+
+<h2>WELCOME TO THE FEDERAL POLYTECHNIC NASARAWA LIBRARY </h2>
+<marquee>AUTOMATED LIBRARY SYSTEM</marquee>
+
+<!-- User Information Section -->
+<div class="user">
+    <h3>User Information</h3>
+    <label for="name">Name:</label><br>
+    <input type="text" id="name"><br><br>
+    <label for="department">Department:</label><br>
+    <input type="text" id="department"><br><br>
+    <label for="age">Age:</label><br>
+    <input type="number" id="age"><br><br>
+    <label for="registration">Registration Number:</label><br>
+    <input type="text" id="registration"><br>
+</div>
+
+<!-- Department Selection Section -->
+<div>
+    <h3>Department Selection</h3>
+    <select id="departmentSelect" onchange="displayBooks()">
+        <option value="">Select your department</option>
+        <option value="Chemical engineering">Chemical engineering</option>
+        <option value="Electrical Engineering">Electrical Engineering</option>
+        <option value="Mechanical Engineering">Mechanical Engineering</option>
+    </select>
+</div>
+
+<!-- Library Books Section -->
+<div id="libraryBooks">
+    <h3>Library Books</h3>
+    <ul id="booksList"></ul>
+</div>
+
+<!-- Library Operations Section -->
+<div id="libraryOperations">
+    <h3>Library Operations</h3>
+
+  <h4>Check Book Availability</h4>
+  <select id="checkSelect">
+      <option value="">Select a book</option>
+      <option value="Polymer">Polymer</option>
+      <option value="Numerical Method">Numerical Method</option>
+      <option value="Circuit Theory">Circuit Theory</option>
+      <option value="Mechanical Workshop">Mechanical Workshop</option>
+      <option value="Unit operation">Unit operation</option>
+      <option value="Electrical power">Electrical power</option>
+      <option value="Machines">Machines</option>
+      <option value="Wiring and piping">Wiring and piping</option>
+      <option value="Machines Designs">Machines Designs</option>
+      <option value="Fluid Machanism">Fluid Machanism</option>
+      <option value="Matlab">Matlab</option>
+  </select>
+  <button onclick="checkAvailability()">Check</button>
+
+    <h4>Borrow a Book</h4>
+    <select id="borrowSelect">
+        <option value="">Select a book</option>
+        <option value="Polymer">Polymer</option>
+        <option value="Numerical Method">Numerical Method</option>
+        <option value="Circuit Theory">Circuit Theory</option>
+        <option value="Mechanical Workshop">Mechanical Workshop</option>
+        <option value="Unit operation">Unit operation</option>
+        <option value="Electrical power">Electrical power</option>
+        <option value="Machines">Machines</option>
+        <option value="Wiring and piping">Wiring and piping</option>
+        <option value="Machines Designs">Machines Designs</option>
+        <option value="Fluid Machanism">Fluid Machanism</option>
+        <option value="Matlab">Matlab</option>
+    </select>
+    <button onclick="borrowBook()">Borrow</button>
+
+    <h4>Return a Book</h4>
+    <select id="returnSelect">
+        <option value="">Select a book</option>
+        <option value="Polymer">Polymer</option>
+        <option value="Numerical Method">Numerical Method</option>
+        <option value="Circuit Theory">Circuit Theory</option>
+        <option value="Mechanical Workshop">Mechanical Workshop</option>
+        <option value="Unit operation">Unit operation</option>
+        <option value="Electrical power">Electrical power</option>
+        <option value="Machines">Machines</option>
+        <option value="Wiring and piping">Wiring and piping</option>
+        <option value="Machines Designs">Machines Designs</option>
+        <option value="Fluid Machanism">Fluid Machanism</option>
+        <option value="Matlab">Matlab</option>
+    </select>
+    <button onclick="returnBook()">Return</button>
+  
+  </div>
+  <footer>
+    <p>Created by Kashim Ibrahim Opeyemi<br>Contact us:+234 9014-794-992<br>copyright@KashInc.com</p>
+
+
+
+<script>
+    // Define library inventory
+    var libraryInventory = [
+        { title: "Fluid Machanism", author: "I B Kashim", department: "Chemical engineering", available: true },
+        { title: "Unit operation", author: "Aishat Temidayo", department: "Chemical engineering", available: true },
+        { title: "Polymer", author: "Janet Godwin", department: "Chemical engineering", available: true },
+        { title: "Matlab", author: "I B Kashim", department: "Chemical engineering", available: true },
+        { title: "Numerical Method", author: "I B Kashim", department: "Chemical engineering", available: true },
+
+        { title: "Circuit Theory", author: "Jamiu Abdulwasiu", department: "Electrical Engineering", available: true },
+        { title: "Wiring and piping", author: "Samuel Jacob", department: "Electrical Engineering", available: true },
+        { title: "Electrical power", author: "Ibrahim kashim opeyemi", department: "Electrical Engineering", available: true },
+        { title: "Matlab", author: "Moses Mpah Ashu", department: "Electrical Engineering", available: true },
+        { title: "Mechanical Workshop", author: "Ibrahim kashim opeyemi", department: "Mechanical Engineering", available: true }
+    ];
+    // Function to display books for selected department 
+      function displayBooks() {
+          var selectedDepartment = document.getElementById("departmentSelect").value;
+          var booksList = document.getElementById("booksList");
+          booksList.innerHTML = ""; // Clear previous list
+          libraryInventory.forEach(function(book) {
+              if (book.department === selectedDepartment) {
+                  var listItem = document.createElement("li");
+                  listItem.textContent = "Title: " + book.title + ", Author: " + book.author;
+                  booksList.appendChild(listItem);
+              }
+          });
+      }
+
+      // Function to borrow a book
+      function borrowBook() {
+          var title = document.getElementById("borrowSelect").value;
+          performBookOperation(title, "borrow");
+      }
+
+      // Function to return a book
+      function returnBook() {
+          var title = document.getElementById("returnSelect").value;
+          performBookOperation(title, "return");
+      }
+
+      // Function to check book availability
+      function checkAvailability() {
+          var title = document.getElementById("checkSelect").value;
+          performBookOperation(title, "check");
+      }
+
+      // Function to perform book operation
+      function performBookOperation(title, operation) {
+          if (!title) {
+              alert("Please select a book.");
+              return;
+          }
+          var selectedDepartment = document.getElementById("departmentSelect").value;
+          for (var i = 0; i < libraryInventory.length; i++) {
+              if (libraryInventory[i].title === title) {
+                  if (libraryInventory[i].department !== selectedDepartment) {
+                      alert(title + " is not in this department. Please select a book from the " + libraryInventory[i].department + " department.");
+                      return;
+                  }
+                  if (operation === "borrow" && libraryInventory[i].available) {
+                      libraryInventory[i].available = false;
+                      alert(title + " has been borrowed successfully.");
+                  } else if (operation === "return" && !libraryInventory[i].available) {
+                      libraryInventory[i].available = true;
+                      alert(title + " has been returned successfully.");
+                  } else if (operation === "check") {
+                      if (libraryInventory[i].available) {
+                          alert(title + " is available for borrowing.");
+                      } else {
+                          alert(title + " is currently not available.");
+                      }
+                  } else {
+                      alert(title + " cannot be borrowed or returned.");
+                  }
+                  return;
+              }
+          }
+          alert(title + " is not found in the library inventory.");
+      }
+  </script>
+
+  </body>
+  </html><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Library System</title>
+  <style>
+      /* Basic styling */
+      body {
+          font-family: Arial, sans-serif;
+          margin: 20px;
+          background-color:#c5c5c5;
+      }
+      button {
+          margin-top: 1px;
+      }
+      .user {
+           background-color: #f0f0f0;
+           padding: 10px;
+           border: 2px solid #ccc;
+           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      h2 {
+        background-color:#40372059;
+           color: White;
+           padding: 10px;
+           border: 5px solid #ccc;
+      }
+      /* Additional styling for department select and books list */
+      #departmentSelect {
+          margin-bottom: 10px;
+      }
+      #booksList {
+          list-style-type: none;
+          padding: 0;
+      }
+      #booksList li {
+          margin-bottom: 5px;
+      }
+    h4 {
+      color:#556B2F;
+    }
+    #libraryOperations{
+      background-color:#808080;
+       padding: 10px;
+       border: 2px solid #ccc;
+       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+      footer {
+          text-align: center;
+          background-color: #333;
+          color: #fff;
+          padding: 20px 0;
+      }
+
+
+  </style>
+</head>
+<body>
+
+<h2>WELCOME TO THE FEDERAL POLYTECHNIC NASARAWA LIBRARY </h2>
+<marquee>AUTOMATED LIBRARY SYSTEM</marquee>
+
+<!-- User Information Section -->
+<div class="user">
+    <h3>User Information</h3>
+    <label for="name">Name:</label><br>
+    <input type="text" id="name"><br><br>
+    <label for="department">Department:</label><br>
+    <input type="text" id="department"><br><br>
+    <label for="age">Age:</label><br>
+    <input type="number" id="age"><br><br>
+    <label for="registration">Registration Number:</label><br>
+    <input type="text" id="registration"><br>
+</div>
+
+<!-- Department Selection Section -->
+<div>
+    <h3>Department Selection</h3>
+    <select id="departmentSelect" onchange="displayBooks()">
+        <option value="">Select your department</option>
+        <option value="Chemical engineering">Chemical engineering</option>
+        <option value="Electrical Engineering">Electrical Engineering</option>
+        <option value="Mechanical Engineering">Mechanical Engineering</option>
+    </select>
+</div>
+
+<!-- Library Books Section -->
+<div id="libraryBooks">
+    <h3>Library Books</h3>
+    <ul id="booksList"></ul>
+</div>
+
+<!-- Library Operations Section -->
+<div id="libraryOperations">
+    <h3>Library Operations</h3>
+
+  <h4>Check Book Availability</h4>
+  <select id="checkSelect">
+      <option value="">Select a book</option>
+      <option value="Polymer">Polymer</option>
+      <option value="Numerical Method">Numerical Method</option>
+      <option value="Circuit Theory">Circuit Theory</option>
+      <option value="Mechanical Workshop">Mechanical Workshop</option>
+      <option value="Unit operation">Unit operation</option>
+      <option value="Electrical power">Electrical power</option>
+      <option value="Machines">Machines</option>
+      <option value="Wiring and piping">Wiring and piping</option>
+      <option value="Machines Designs">Machines Designs</option>
+      <option value="Fluid Machanism">Fluid Machanism</option>
+      <option value="Matlab">Matlab</option>
+  </select>
+  <button onclick="checkAvailability()">Check</button>
+
+    <h4>Borrow a Book</h4>
+    <select id="borrowSelect">
+        <option value="">Select a book</option>
+        <option value="Polymer">Polymer</option>
+        <option value="Numerical Method">Numerical Method</option>
+        <option value="Circuit Theory">Circuit Theory</option>
+        <option value="Mechanical Workshop">Mechanical Workshop</option>
+        <option value="Unit operation">Unit operation</option>
+        <option value="Electrical power">Electrical power</option>
+        <option value="Machines">Machines</option>
+        <option value="Wiring and piping">Wiring and piping</option>
+        <option value="Machines Designs">Machines Designs</option>
+        <option value="Fluid Machanism">Fluid Machanism</option>
+        <option value="Matlab">Matlab</option>
+    </select>
+    <button onclick="borrowBook()">Borrow</button>
+
+    <h4>Return a Book</h4>
+    <select id="returnSelect">
+        <option value="">Select a book</option>
+        <option value="Polymer">Polymer</option>
+        <option value="Numerical Method">Numerical Method</option>
+        <option value="Circuit Theory">Circuit Theory</option>
+        <option value="Mechanical Workshop">Mechanical Workshop</option>
+        <option value="Unit operation">Unit operation</option>
+        <option value="Electrical power">Electrical power</option>
+        <option value="Machines">Machines</option>
+        <option value="Wiring and piping">Wiring and piping</option>
+        <option value="Machines Designs">Machines Designs</option>
+        <option value="Fluid Machanism">Fluid Machanism</option>
+        <option value="Matlab">Matlab</option>
+    </select>
+    <button onclick="returnBook()">Return</button>
+  
+  </div>
+  <footer>
+    <p>Created by Kashim Ibrahim Opeyemi<br>Contact us:+234 9014-794-992<br>copyright@KashInc.com</p>
+
+
+
+<script>
+    // Define library inventory
+    var libraryInventory = [
+        { title: "Fluid Machanism", author: "I B Kashim", department: "Chemical engineering", available: true },
+        { title: "Unit operation", author: "Aishat Temidayo", department: "Chemical engineering", available: true },
+        { title: "Polymer", author: "Janet Godwin", department: "Chemical engineering", available: true },
+        { title: "Matlab", author: "I B Kashim", department: "Chemical engineering", available: true },
+        { title: "Numerical Method", author: "I B Kashim", department: "Chemical engineering", available: true },
+
+        { title: "Circuit Theory", author: "Jamiu Abdulwasiu", department: "Electrical Engineering", available: true },
+        { title: "Wiring and piping", author: "Samuel Jacob", department: "Electrical Engineering", available: true },
+        { title: "Electrical power", author: "Ibrahim kashim opeyemi", department: "Electrical Engineering", available: true },
+        { title: "Matlab", author: "Moses Mpah Ashu", department: "Electrical Engineering", available: true },
+        { title: "Mechanical Workshop", author: "Ibrahim kashim opeyemi", department: "Mechanical Engineering", available: true }
+    ];
+    // Function to display books for selected department 
+      function displayBooks() {
+          var selectedDepartment = document.getElementById("departmentSelect").value;
+          var booksList = document.getElementById("booksList");
+          booksList.innerHTML = ""; // Clear previous list
+          libraryInventory.forEach(function(book) {
+              if (book.department === selectedDepartment) {
+                  var listItem = document.createElement("li");
+                  listItem.textContent = "Title: " + book.title + ", Author: " + book.author;
+                  booksList.appendChild(listItem);
+              }
+          });
+      }
+
+      // Function to borrow a book
+      function borrowBook() {
+          var title = document.getElementById("borrowSelect").value;
+          performBookOperation(title, "borrow");
+      }
+
+      // Function to return a book
+      function returnBook() {
+          var title = document.getElementById("returnSelect").value;
+          performBookOperation(title, "return");
+      }
+
+      // Function to check book availability
+      function checkAvailability() {
+          var title = document.getElementById("checkSelect").value;
+          performBookOperation(title, "check");
+      }
+
+      // Function to perform book operation
+      function performBookOperation(title, operation) {
+          if (!title) {
+              alert("Please select a book.");
+              return;
+          }
+          var selectedDepartment = document.getElementById("departmentSelect").value;
+          for (var i = 0; i < libraryInventory.length; i++) {
+              if (libraryInventory[i].title === title) {
+                  if (libraryInventory[i].department !== selectedDepartment) {
+                      alert(title + " is not in this department. Please select a book from the " + libraryInventory[i].department + " department.");
+                      return;
+                  }
+                  if (operation === "borrow" && libraryInventory[i].available) {
+                      libraryInventory[i].available = false;
+                      alert(title + " has been borrowed successfully.");
+                  } else if (operation === "return" && !libraryInventory[i].available) {
+                      libraryInventory[i].available = true;
+                      alert(title + " has been returned successfully.");
+                  } else if (operation === "check") {
+                      if (libraryInventory[i].available) {
+                          alert(title + " is available for borrowing.");
+                      } else {
+                          alert(title + " is currently not available.");
+                      }
+                  } else {
+                      alert(title + " cannot be borrowed or returned.");
+                  }
+                  return;
+              }
+          }
+          alert(title + " is not found in the library inventory.");
+      }
+  </script>
+
+  </body>
+      </html>
